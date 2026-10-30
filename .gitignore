@@ -1,0 +1,4 @@
+dist/
+__pycache__/
+STATUS.md
+publish-local.ps1

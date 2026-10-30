@@ -1,0 +1,40 @@
+name: Validate plugin
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate and package
+        run: python scripts/package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: augelab-plugin-packages
+          path: |
+            dist/*.zip
+            dist/SHA256SUMS.txt
+          if-no-files-found: error
+  windows-setup:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test setup without installing Studio
+        shell: powershell
+        run: .\tests\setup-windows.tests.ps1
+  linux-setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Test Linux setup without installing Studio
+        run: python -m unittest discover -s tests -p test_setup_linux.py -v

@@ -1,0 +1,5 @@
+interface:
+  display_name: "AugeLab"
+  short_description: "Build computer vision and AI workflows"
+  icon_small: "./assets/augelab.png"
+  icon_large: "./assets/augelab.png"

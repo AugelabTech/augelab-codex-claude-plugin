@@ -1,0 +1,11 @@
+{
+  "name": "augelab-plugins",
+  "owner": { "name": "AugeLab" },
+  "plugins": [
+    {
+      "name": "augelab",
+      "source": "./plugins/augelab",
+      "description": "Build computer vision and AI workflows with AugeLab Studio."
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "name": "augelab",
+  "version": "0.1.5",
+  "description": "Build computer vision and AI workflows in AugeLab Studio through its local MCP connection.",
+  "author": {
+    "name": "AugeLab"
+  },
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "requires_local_executor": true,
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/augelab/SKILL.md"
+    }
+  },
+  "interface": {
+    "displayName": "AugeLab",
+    "shortDescription": "Build computer vision and AI workflows",
+    "longDescription": "Build and inspect computer vision and AI workflows, from image processing and visual inspection to model training. Setup on Windows x64 and Linux x86-64/ARM64 downloads and installs Studio when missing, then guides account registration, license activation, and local MCP connection. Requires a valid Studio license. macOS is not supported.",
+    "developerName": "AugeLab",
+    "category": "Productivity",
+    "logo": "./assets/augelab.png",
+    "composerIcon": "./assets/augelab.png",
+    "capabilities": ["Read", "Write"],
+    "defaultPrompt": [
+      "Use AugeLab to build a visual inspection project from my sample images."
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "x86_64": {
+    "url": "https://studio-desktop-application.s3.eu-central-1.amazonaws.com/linux/installer.sh",
+    "sha256": "121c96eeb143d1455747aca59abffe362a0f1a062875c3ebb5f7e65b701219f9"
+  },
+  "aarch64": {
+    "url": "https://studio-desktop-application.s3.eu-central-1.amazonaws.com/linux_arm64/installer.sh",
+    "sha256": "9304ed305e9177595eef6552456a647406ec762056e372985fbf2bdc7d227e99"
+  }
+}
