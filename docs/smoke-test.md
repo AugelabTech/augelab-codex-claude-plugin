@@ -24,7 +24,6 @@ machine's license or create repeated accounts to obtain licenses.
 7. Repeat with mail/browser/UI tools unavailable: verify exact manual steps and
    an honest partial-setup result rather than a success claim.
 
-This full fresh-machine registration/activation test has not yet been performed.
 The automated Windows tests cover setup decisions and failure paths with stubs;
 they do not prove account creation, mail delivery, licensing, or fresh installation.
 
@@ -50,8 +49,7 @@ live ARM64 install test.
    without installation. macOS must be reported as unsupported.
 
 Automated Linux tests exercise architecture selection, integrity failures, setup
-decisions, and JSON/SSE MCP probes against a local test server. A real clean Linux
-desktop installation, account activation, and live Studio workflow remain pending.
+decisions, and JSON/SSE MCP probes against a local test server.
 
 ## Existing Studio workflow
 

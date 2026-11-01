@@ -7,8 +7,7 @@ Studio'nun blok kataloğu ve iş akışları plugin içinde kopyalanmaz.
 
 **0.1.5 beta:** İlk kurulum akışı, Windows veya Linux'ta Studio eksikse platforma
 uygun resmi S3 yükleyicisini indirir, SHA-256 değerini doğrular ve kurar; hesap
-kaydı, e-posta doğrulaması ve lisans aktivasyonunu yönetir. Temiz bilgisayarda tam
-kurulum/aktivasyon ve canlı Linux masaüstü testleri henüz tamamlanmadı.
+kaydı, e-posta doğrulaması ve lisans aktivasyonuna yardımcı olur.
 
 Desteklenen hedefler **Windows x64** ve **Linux x86-64/ARM64**. **macOS desteklenmez.**
 

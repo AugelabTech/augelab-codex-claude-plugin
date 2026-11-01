@@ -6,7 +6,6 @@ Claude Code to the running Studio's tools through its local MCP server.
 
 **0.1.5 beta:** Setup on Windows and Linux downloads and installs Studio when missing, then
 helps register an account, confirm email, and activate the user's license.
-Fresh-machine install/activation and live Linux desktop tests are still pending.
 [Türkçe kurulum](README.tr.md).
 
 ## Prerequisites
