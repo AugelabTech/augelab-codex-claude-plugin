@@ -4,7 +4,9 @@ Build computer vision and AI workflows with AugeLab Studio, from image processin
 and visual inspection to model training. One shared skill connects Codex and
 Claude Code to the running Studio's tools through its local MCP server.
 
-**0.1.5 beta:** Setup on Windows and Linux downloads and installs Studio when missing, then
+**0.1.6 beta:** A separate OpenAI desktop-only package bundles a stdio-to-Studio
+bridge. GitHub installations retain their direct HTTP connection.
+Setup on Windows and Linux downloads and installs Studio when missing, then
 helps register an account, confirm email, and activate the user's license.
 [Türkçe kurulum](README.tr.md).
 
@@ -128,6 +130,25 @@ Python 3.12+, standard library only:
 python scripts/package.py
 ```
 
+For the separate OpenAI local-MCP submission package, Node.js 22+ is also required
+at build time and on the user's desktop. Build dependencies are pinned in
+`bridge/package-lock.json`; their JavaScript code and license texts are included
+in the resulting ZIP, so startup does not use npm or download code:
+
+```sh
+cd bridge
+npm ci --ignore-scripts
+npm run build
+npm test
+cd ..
+python scripts/package.py --openai-local
+python -m unittest discover -s tests -p test_submission_package.py -v
+```
+
+See [bridge runtime and protocol behavior](bridge/README.md) and the
+[submission checklist](docs/openai-local-submission.md). OpenAI must confirm
+organization eligibility before the ZIP is submitted to its public directory.
+
 Windows setup regression tests (no real installation or mailbox access):
 
 ```powershell
@@ -142,8 +163,10 @@ python3 -m unittest discover -s tests -p test_setup_linux.py -v
 
 Outputs:
 
-- `dist/augelab-0.1.5.zip`: plugin root, including both hidden client manifests.
-- `dist/augelab-marketplace-0.1.5.zip`: both catalogs, plugin, and installation docs.
+- `dist/augelab-0.1.6.zip`: plugin root, including both hidden client manifests.
+- `dist/augelab-marketplace-0.1.6.zip`: both catalogs, plugin, and installation docs.
+- `dist/augelab-openai-local-0.1.6.zip`: generated with `--openai-local`; uses the
+  bundled stdio bridge and requires a local Node.js 22+ runtime.
 - `dist/SHA256SUMS.txt`: archive checksums.
 
 The packager uses explicit file allowlists and validates archive contents.
@@ -162,6 +185,7 @@ plugins/augelab/
   skills/augelab/SKILL.md              One shared entry-point skill
   skills/augelab/scripts/              Windows/Linux setup and reviewed download pins
   skills/augelab/references/           Setup, account/license, and MCP guidance
+bridge/                               Stdio bridge source, lockfile, build and tests
 ```
 
 This repository contains the plugin only, not the proprietary Studio source.

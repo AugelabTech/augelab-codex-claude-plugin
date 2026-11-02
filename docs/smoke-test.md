@@ -69,3 +69,20 @@ decisions, and JSON/SSE MCP probes against a local test server.
 
 Record the client/Studio versions, operating system, each result, and any error.
 Package validation or an accepted tool request alone does not pass this test.
+
+## OpenAI stdio profile
+
+1. Extract `augelab-openai-local-0.1.6.zip` in a clean directory. Confirm Node.js
+   22+ is available to the desktop client. Start the bundle from `.mcp.json`
+   without running npm install in the extracted package.
+2. Repeat the existing Studio workflow through stdio, checking that tools,
+   resources and prompts come from Studio and the active port matches `--port`.
+3. Stop Studio's MCP server and reconnect. Confirm the client receives a concrete
+   error and stderr explains how to start MCP and reconnect. stdout must contain
+   only JSON-RPC messages. Do not blindly repeat a failed operation.
+4. Close the client connection and verify the bridge exits while Studio stays
+   open. Repeat with Studio on a custom port; use only the displayed active port.
+
+Automated bridge tests cover JSON/SSE, sessions, negotiated protocol headers,
+bidirectional requests, progress, cancellation, concurrency, error redaction,
+deadlines, redirects and process shutdown against a local protocol fixture.
