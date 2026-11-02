@@ -25,8 +25,9 @@ jobs:
           npm run build
       - name: Validate and package
         run: |
-          python scripts/package.py --openai-local
+          python scripts/package.py --openai-local --openai-skills-only
           python -m unittest discover -s tests -p test_submission_package.py -v
+          python -m unittest discover -s tests -p test_skills_only_package.py -v
       - uses: actions/upload-artifact@v4
         with:
           name: augelab-plugin-packages

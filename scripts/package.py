@@ -22,6 +22,7 @@ PLUGIN_FILES = (
     "skills/augelab/agents/openai.yaml",
     "skills/augelab/assets/augelab.png",
     "skills/augelab/references/connection.md",
+    "skills/augelab/references/client-mcp.md",
     "skills/augelab/references/setup.md",
     "skills/augelab/references/account-and-license.md",
     "skills/augelab/scripts/setup-windows.ps1",
@@ -179,10 +180,39 @@ def openai_files(version: str) -> list[tuple[Path | bytes, str]]:
     return files
 
 
+def skills_only_files(version: str) -> list[tuple[Path | bytes, str]]:
+    codex = read_json(PLUGIN / ".codex-plugin/plugin.json")
+    codex.pop("mcpServers")
+    codex["name"] = "augelab-setup"
+    codex["description"] = "Set up AugeLab Studio for computer vision and AI with an agent-guided local connection."
+    codex["interface"]["displayName"] = "AugeLab Setup"
+    codex["interface"]["shortDescription"] = "Computer vision and AI setup"
+    codex["interface"]["longDescription"] = (
+        "Set up AugeLab Studio for computer vision and AI workflows on Windows x64 or graphical Linux "
+        "x86-64/ARM64. The skill helps download and install Studio, register or sign in, and activate "
+        "the user's own license. During first setup, the agent helps configure a separate local Studio "
+        "MCP connection in a supported local agent client, with the user's authorization. "
+        "This skills-only plugin does not bundle or automatically expose MCP tools. Studio operations "
+        "require that independent connection, a running Studio MCP server and a valid license. "
+        "Local shell/UI access and a new chat or reconnect may be needed; manual steps are provided "
+        "when automation is unavailable. macOS is not supported."
+    )
+    claude = read_json(PLUGIN / ".claude-plugin/plugin.json")
+    claude.update(name=codex["name"], description=codex["description"])
+    require(codex["version"] == claude["version"] == version, "Skills-only versions differ")
+    files = [(PLUGIN / name, name) for name in PLUGIN_FILES
+             if name not in {".mcp.json", ".codex-plugin/plugin.json", ".claude-plugin/plugin.json"}]
+    for manifest, name in ((codex, ".codex-plugin/plugin.json"), (claude, ".claude-plugin/plugin.json")):
+        files.append(((json.dumps(manifest, indent=2) + "\n").encode("utf-8"), name))
+    return files
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--openai-local", action="store_true",
                         help="Also build the desktop-only stdio submission ZIP (requires bridge build)")
+    parser.add_argument("--openai-skills-only", action="store_true",
+                        help="Also build the skills-only setup plugin with a separate agent-guided MCP connection")
     args = parser.parse_args()
     version = validate()
     # Fail before producing any archives if the submission bundle is stale.
@@ -199,6 +229,8 @@ def main() -> None:
     ]
     if submission is not None:
         packages.append((f"augelab-openai-local-{version}.zip", submission))
+    if args.openai_skills_only:
+        packages.append((f"augelab-openai-skills-only-{version}.zip", skills_only_files(version)))
     for name, files in packages:
         output = dist / name
         write_archive(output, files)

@@ -149,6 +149,22 @@ See [bridge runtime and protocol behavior](bridge/README.md) and the
 [submission checklist](docs/openai-local-submission.md). OpenAI must confirm
 organization eligibility before the ZIP is submitted to its public directory.
 
+The separate **AugeLab Setup** skills-only profile contains no declared MCP
+server. Its first setup skill guides installation/activation and adds a separate
+user-authorized local client connection. It requires local execution, supported
+client CLI/settings access and reconnect/new-chat support; it does not expose
+Studio tools merely by installing the plugin. The connection is managed by the
+user's client and survives uninstalling the skills-only plugin.
+
+```sh
+python scripts/package.py --openai-skills-only
+python -m unittest discover -s tests -p test_skills_only_package.py -v
+```
+
+This profile uses package name `augelab-setup` so its independent listing is
+distinct from the full MCP integration. Its store eligibility remains subject
+to OpenAI review. See [the local client connection workflow](plugins/augelab/skills/augelab/references/client-mcp.md).
+
 Windows setup regression tests (no real installation or mailbox access):
 
 ```powershell
@@ -167,6 +183,9 @@ Outputs:
 - `dist/augelab-marketplace-0.1.6.zip`: both catalogs, plugin, and installation docs.
 - `dist/augelab-openai-local-0.1.6.zip`: generated with `--openai-local`; uses the
   bundled stdio bridge and requires a local Node.js 22+ runtime.
+- `dist/augelab-openai-skills-only-0.1.6.zip`: generated with
+  `--openai-skills-only`; one setup skill and an independent, agent-guided client
+  MCP connection. No bundled MCP server or Node.js bridge requirement.
 - `dist/SHA256SUMS.txt`: archive checksums.
 
 The packager uses explicit file allowlists and validates archive contents.

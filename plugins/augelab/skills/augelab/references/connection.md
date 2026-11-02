@@ -8,6 +8,11 @@ Supported desktop targets are Windows x64 and Linux x86-64/ARM64. macOS is not
 supported. Linux requires the Studio UI in a graphical session; a headless-only
 installation does not provide this desktop MCP setup.
 
+For a skills-only installation with no declared MCP server, use
+[client-mcp.md](client-mcp.md) to add the independent client connection first.
+The HTTP/stdio plugin configuration guidance below applies to the distributions
+that bundle an MCP declaration.
+
 The GitHub/Claude Code package declares this HTTP endpoint directly. The separate
 OpenAI desktop-only submission package declares a bundled stdio bridge under
 `server/` instead; it requires Node.js 22+ on PATH in the local desktop client's

@@ -84,3 +84,17 @@ Paketin oluşturulması mağazada yayın veya başvuru izni anlamına gelmez.
 [Derleme komutları](README.md#validate-and-package) ·
 [Başvuru kontrol listesi](docs/openai-local-submission.md) ·
 [Canlı test adımları](docs/smoke-test.md)
+
+## Skills-only mağaza profili
+
+**AugeLab Setup**, tek beceri içeren ayrı `augelab-setup` paketidir. MCP sunucusu
+tanımı içermez. İlk kurulumda ajan Studio'yu kurar, lisans aktivasyonuna yardım
+eder ve kullanıcının izniyle istemcinin ayrı yerel MCP bağlantısını ayarlar.
+Mevcut ayarlar korunur; istemciye göre yeniden bağlanma veya yeni sohbet gerekir.
+Kurulum araçları yoksa kalan manuel adımlar gösterilir. Bağlantı istemcide
+yönetilir ve bu beceri paketi kaldırılınca otomatik silinmez.
+
+`python scripts/package.py --openai-skills-only` komutu
+`dist/augelab-openai-skills-only-0.1.6.zip` üretir. Bu profil Node.js köprüsü
+gerektirmez. Açıklamasında ayrı yerel MCP gereksinimi belirtilir; mağaza kabulü
+OpenAI incelemesine bağlıdır.
