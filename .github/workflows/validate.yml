@@ -62,7 +62,9 @@ jobs:
         shell: powershell
         run: .\tests\setup-windows.tests.ps1
   linux-setup:
-    runs-on: ubuntu-latest
+    # Python 3.9 builds are unavailable on newer Ubuntu runner images.
+    # Keep testing the helper's minimum supported Python on a compatible image.
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
