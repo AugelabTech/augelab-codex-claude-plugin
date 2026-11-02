@@ -13,8 +13,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: bridge/package-lock.json
+      - name: Build bundled local MCP bridge
+        working-directory: bridge
+        run: |
+          npm ci --ignore-scripts
+          npm run build
       - name: Validate and package
-        run: python scripts/package.py
+        run: |
+          python scripts/package.py --openai-local --openai-skills-only
+          python -m unittest discover -s tests -p test_submission_package.py -v
+          python -m unittest discover -s tests -p test_skills_only_package.py -v
       - uses: actions/upload-artifact@v4
         with:
           name: augelab-plugin-packages
@@ -22,6 +35,25 @@ jobs:
             dist/*.zip
             dist/SHA256SUMS.txt
           if-no-files-found: error
+  stdio-bridge:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['22', '24']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: bridge/package-lock.json
+      - name: Build and test stdio bridge
+        working-directory: bridge
+        run: |
+          npm ci --ignore-scripts
+          npm run build
+          npm test
   windows-setup:
     runs-on: windows-latest
     steps:
@@ -30,7 +62,9 @@ jobs:
         shell: powershell
         run: .\tests\setup-windows.tests.ps1
   linux-setup:
-    runs-on: ubuntu-latest
+    # Python 3.9 builds are unavailable on newer Ubuntu runner images.
+    # Keep testing the helper's minimum supported Python on a compatible image.
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

@@ -53,7 +53,16 @@ connection as separate results. Report only the steps actually verified.
 
 ## Connect
 
-Find the tools and resources exposed by the bundled `augelab-studio` MCP server;
+If Studio tools are already connected, reuse them. The skills-only distribution
+has no bundled MCP declaration: after Studio setup, use
+[client-mcp.md](references/client-mcp.md) to add the separate local connection
+with the user's authorization. Inspect the installed plugin's manifest/config
+before adding it; a GitHub or stdio package that already declares its server
+needs [connection troubleshooting](references/connection.md), not a duplicate
+client entry. Configuration saved on disk is not proof that tools are loaded;
+reconnect or start a new local chat as required by the client.
+
+Find the tools and resources exposed by the connected Studio MCP server;
 the client may add a namespace to tool names. Read its advertised status resource
 and `augelab://studio/agent-instructions` once per connection, reusing the guidance
 until the Studio session or version changes. Use the advertised agent-instructions

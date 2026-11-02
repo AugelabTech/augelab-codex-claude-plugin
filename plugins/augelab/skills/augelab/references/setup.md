@@ -108,6 +108,12 @@ has accepted the user's key, open **Chat > Settings > MCP > Start** (using
 available UI tools or user guidance), then follow [connection.md](connection.md).
 Do not claim full readiness until MCP tools read the Studio status and instructions.
 
+For the skills-only distribution, complete the separate client connection with
+[client-mcp.md](client-mcp.md) after starting Studio MCP. The agent should handle
+the supported client CLI/UI steps once the connection is authorized, preserve
+existing settings, and give the exact manual fallback if blocked. This package
+does not declare or auto-register a server during plugin installation.
+
 Automatic installation is attached to the Codex **Run setup** onboarding step,
 not an unattended plugin-install lifecycle hook. Plugins with lifecycle hooks
 are ineligible for the public OpenAI directory. Older clients and Claude Code

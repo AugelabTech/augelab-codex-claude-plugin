@@ -24,7 +24,6 @@ machine's license or create repeated accounts to obtain licenses.
 7. Repeat with mail/browser/UI tools unavailable: verify exact manual steps and
    an honest partial-setup result rather than a success claim.
 
-This full fresh-machine registration/activation test has not yet been performed.
 The automated Windows tests cover setup decisions and failure paths with stubs;
 they do not prove account creation, mail delivery, licensing, or fresh installation.
 
@@ -50,8 +49,7 @@ live ARM64 install test.
    without installation. macOS must be reported as unsupported.
 
 Automated Linux tests exercise architecture selection, integrity failures, setup
-decisions, and JSON/SSE MCP probes against a local test server. A real clean Linux
-desktop installation, account activation, and live Studio workflow remain pending.
+decisions, and JSON/SSE MCP probes against a local test server.
 
 ## Existing Studio workflow
 
@@ -71,3 +69,20 @@ desktop installation, account activation, and live Studio workflow remain pendin
 
 Record the client/Studio versions, operating system, each result, and any error.
 Package validation or an accepted tool request alone does not pass this test.
+
+## OpenAI stdio profile
+
+1. Extract `augelab-openai-local-0.1.6.zip` in a clean directory. Confirm Node.js
+   22+ is available to the desktop client. Start the bundle from `.mcp.json`
+   without running npm install in the extracted package.
+2. Repeat the existing Studio workflow through stdio, checking that tools,
+   resources and prompts come from Studio and the active port matches `--port`.
+3. Stop Studio's MCP server and reconnect. Confirm the client receives a concrete
+   error and stderr explains how to start MCP and reconnect. stdout must contain
+   only JSON-RPC messages. Do not blindly repeat a failed operation.
+4. Close the client connection and verify the bridge exits while Studio stays
+   open. Repeat with Studio on a custom port; use only the displayed active port.
+
+Automated bridge tests cover JSON/SSE, sessions, negotiated protocol headers,
+bidirectional requests, progress, cancellation, concurrency, error redaction,
+deadlines, redirects and process shutdown against a local protocol fixture.
