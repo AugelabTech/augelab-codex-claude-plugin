@@ -9,6 +9,7 @@ import re
 import struct
 import zipfile
 from pathlib import Path
+from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / "plugins" / "augelab"
@@ -85,6 +86,16 @@ def validate() -> str:
     require(codex["skills"] == "./skills/", "Unexpected skills path")
     require(codex["mcpServers"] == "./.mcp.json", "Unexpected MCP path")
     require(codex["requires_local_executor"] is True, "Desktop execution must be declared")
+    interface = codex["interface"]
+    for field in ("displayName", "shortDescription"):
+        require(isinstance(interface.get(field), str) and 0 < len(interface[field]) <= 30,
+                f"{field} must be 1..30 characters for public submission")
+    for field in ("websiteURL", "supportURL", "privacyPolicyURL", "termsOfServiceURL"):
+        url = interface.get(field, "")
+        parsed = urlsplit(url)
+        require(isinstance(url, str) and 0 < len(url) <= 1024 and parsed.scheme == "https"
+                and bool(parsed.hostname) and parsed.username is None and parsed.password is None,
+                f"{field} must be an HTTPS URL without credentials")
     require(codex["extensions"]["com.openai"]["onboardingSkill"] ==
             "./skills/augelab/SKILL.md", "Setup must reuse the shared skill")
     installer = read_json(PLUGIN / "skills/augelab/scripts/windows-installer.json")
